@@ -30,6 +30,10 @@ Rails.application.routes.draw do
         get ':id/merchant',      to: 'merchants#show'
       end
       resources :items,         only: [:index,:show]
+
+      namespace :transactions do
+      end
+      resources :transactions,  only: [:index,:show]
     end
   end
 end
