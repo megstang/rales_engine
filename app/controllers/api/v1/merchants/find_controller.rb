@@ -1,11 +1,11 @@
 class Api::V1::Merchants::FindController < ApplicationController
 
   def show
-    render json: Merchant.find_by(strong_params)
+    render json: MerchantSerializer.new(Merchant.find_by(strong_params))
   end
 
   def index
-    render json: Merchant.where(strong_params)
+    render json: MerchantSerializer.new(Merchant.where(strong_params))
   end
 
   private
