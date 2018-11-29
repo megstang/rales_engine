@@ -14,8 +14,8 @@ class Api::V1::Merchants::RevenueController < ApplicationController
 
   def search_query
     if params[:date]
-      date = Date.parse(params[:date])
-      {created_at: params[:date]}
+      date = Date.parse(params[:date].gsub("\"", ""))
+      {created_at: params[:date].gsub("\"", "")}
     end
   end
 

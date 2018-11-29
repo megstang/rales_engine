@@ -21,14 +21,20 @@ class Merchant < ApplicationRecord
   end
 
   def total_revenue(date_or_default = {})
-
-
-    invoices
-    .joins(:transactions)
-    .joins('join invoice_items on invoice_items.invoice_id = invoices.id')
-    .where(transactions: {result: "success"})
-    .where(date_or_default)
-    .sum('invoice_items.unit_price * invoice_items.quantity')
+    if date_or_default = {}
+      invoices
+      .joins(:transactions)
+      .joins('join invoice_items on invoice_items.invoice_id = invoices.id')
+      .where(transactions: {result: "success"})
+      .sum('invoice_items.unit_price * invoice_items.quantity')
+    else
+      invoices
+      .joins(:transactions)
+      .joins('join invoice_items on invoice_items.invoice_id = invoices.id')
+      .where(transactions: {result: "success"})
+      .where('invoices.created_at LIKE ?', date_or_default[:created_at])
+      .sum('invoice_items.unit_price * invoice_items.quantity')
+    end
     #  binding.pry
     # invoices
     #  .joins(:transactions, :invoice_items)
