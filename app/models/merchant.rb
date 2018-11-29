@@ -3,7 +3,7 @@ class Merchant < ApplicationRecord
   has_many :invoices
 
   def self.most_revenue(quantity)
-    select('merchants.*, sum(invoice_items.quantity * invoice_items.unit_price/100) as revenue')
+    select('merchants.*, sum(invoice_items.quantity * invoice_items.unit_price.to_f/100) as revenue')
     .joins(invoices: [:invoice_items, :transactions])
     .where(transactions: {result: 'success'})
     .group(:id)
@@ -19,4 +19,12 @@ class Merchant < ApplicationRecord
     .order('items_sold desc')
     .limit(quantity)
   end
+
+  def total_revenue
+    invoices
+    .joins(:transactions, :invoice_items)
+    .where(transactions: {result: "success"})
+    .sum('invoice_items.unit_price * invoice_items.quantity')
+  end
+
 end
