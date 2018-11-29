@@ -20,11 +20,21 @@ class Merchant < ApplicationRecord
     .limit(quantity)
   end
 
-  def total_revenue
+  def total_revenue(date_or_default = {})
+
+
     invoices
-    .joins(:transactions, :invoice_items)
+    .joins(:transactions)
+    .joins('join invoice_items on invoice_items.invoice_id = invoices.id')
     .where(transactions: {result: "success"})
+    .where(date_or_default)
     .sum('invoice_items.unit_price * invoice_items.quantity')
+    #  binding.pry
+    # invoices
+    #  .joins(:transactions, :invoice_items)
+    #  .where(transactions: {result: "success"})
+    #  .where(date_or_default)
+    #  .sum('invoice_items.unit_price * invoice_items.quantity')
   end
 
 end
