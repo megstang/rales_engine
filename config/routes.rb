@@ -33,6 +33,9 @@ Rails.application.routes.draw do
       namespace :items do
         get ':id/invoice_items', to: 'invoice_items#index'
         get ':id/merchant',      to: 'merchants#show'
+        get 'most_revenue',      to: 'revenue#index'
+        get 'most_items',        to: 'most_items#index'
+        get ':id/best_day',      to: 'best_day#show'
       end
       resources :items,          only: [:index,:show]
 
