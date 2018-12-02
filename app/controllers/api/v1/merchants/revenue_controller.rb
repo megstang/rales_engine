@@ -1,12 +1,20 @@
 class Api::V1::Merchants::RevenueController < ApplicationController
 
   def index
-    render json: Merchant.most_revenue(params[:quantity].to_i)
+    if params[:quantity]
+      merchants = Merchant.most_revenue(params[:quantity].to_i)
+      render json: MerchantSerializer.new(merchants)
+    elsif params[:date]
+      revenue = Merchant.merchants_revenue_by_date(search_query)
+      render json: {data: {attributes: {revenue: revenue}}}.to_json
+    end
   end
 
   def show
-      revenue = Merchant.find(params[:id]).total_revenue(search_query)
-      render json: revenue.to_f/100
+      merchant = Merchant.find(params[:id])
+      result = merchant.total_revenue(search_query)
+      revenue = Revenue.new(result)
+      render json: {data: {attributes: {revenue: revenue}}}.to_json
   end
 
 
