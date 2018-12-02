@@ -25,6 +25,9 @@ Rails.application.routes.draw do
       resources :invoices,      only: [:index,:show]
 
       namespace :invoice_items do
+        get 'find',             to: 'find#show'
+        get 'find_all',         to: 'find#index'
+        get 'random',           to: 'random#show'
         get ':id/invoice',       to: 'invoices#show'
         get ':id/item',          to: 'items#show'
       end
