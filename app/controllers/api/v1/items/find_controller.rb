@@ -4,6 +4,9 @@ class Api::V1::Items::FindController < ApplicationController
     if params[:unit_price]
       unit_price = convert_to_cents(params[:unit_price])
       render json: ItemSerializer.new(Item.find_by(unit_price: unit_price))
+    elsif params[:created_at]
+      time = DateTime.parse(params[:created_at])
+      render json: ItemSerializer.new(Item.find_by(created_at: time))
     else
       render json: ItemSerializer.new(Item.find_by(strong_params))
     end
