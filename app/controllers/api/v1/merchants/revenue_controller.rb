@@ -14,7 +14,7 @@ class Api::V1::Merchants::RevenueController < ApplicationController
       merchant = Merchant.find(params[:id])
       result = merchant.total_revenue(search_query)
       revenue = Revenue.new(result)
-      render json: {data: {attributes: {revenue: revenue}}}.to_json
+      render json: {data: {attributes: {revenue: revenue.rev}}}.to_json
   end
 
 
